@@ -1,0 +1,23 @@
+{
+    "version": "1.0",
+    "name": "Luna",
+    "launch_path": "/index.html",
+        "fullscreen": true,
+            "cursor": false,
+                "scrollbar": false,
+    "description": "A lunar calendar for the Nokia.",
+    "icons": {
+        "128": "/images/logo128.png"
+    },
+    "developer": {
+        "name": "Johannes Hassenstein",
+        "url": "https://johassenstein.de"
+    },
+    "installs_allowed_from": ["*"],
+    "default_locale": "en",
+    "permissions": {
+        "geolocation": {
+	        "description": "Required to display lunar data for your actual position"
+        }
+    }
+}

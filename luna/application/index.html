@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+    <script type="text/javascript" src="js/suncalc.js"></script>
+  </head>
+  <body>
+    <header>
+      <div><img src="images/graphics/rise.png" alt="⯅"><span></span></div>
+      <div><img src="images/graphics/set.png" alt="⯆"><span></span></div>
+    </header>
+    <main>
+      <div class="ui-days">
+        <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+      </div>
+    </main>
+    <aside style="display: none;">
+      <canvas id="canvas" height="320px" width="240px"></canvas>
+      <ul>
+        <li>
+          <span></span>
+        </li>
+        <hr>
+        <li>
+          <span><img src="images/graphics/sunset.png" alt="Sunset"></span><span></span><span> Uhr</span>
+        </li>
+        <li>
+          <span><img src="images/graphics/darkness.png" alt="Darkness"></span><span></span><span> Uhr</span>
+        </li>
+        <li>
+          <span><img src="images/graphics/nadir.png" alt="Darkest time"></span><span></span><span> Uhr</span>
+        </li>
+        <li>
+          <span><img src="images/graphics/distance.png" alt="Distance"></span><span></span><span>km</span>
+        </li>
+      </ul>
+    </aside>
+    <script type="text/javascript" src="js/webapp.js"></script>
+  </body>
+</html>

@@ -1,0 +1,132 @@
+/*240 X 320*/
+html{
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+html, body{
+  width: 240px;
+  height: 320px;
+  background: black;
+  color: white;
+  font-size: 18px;
+  line-height: 18px;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: none;
+  font-family: sans-serif;
+  scroll-behavior: auto;
+  user-select: none;
+  -moz-user-select: none;
+}
+body{
+  overflow: hidden;
+}
+::selection, ::-moz-selection{
+  background: white;
+  color: black;
+}
+header:before{
+  content: "";
+  top: 0;
+  left: 0;
+  height: 100px;
+  width: 240px;
+  z-index: 1;
+  position: fixed;
+  background: black;
+}
+header:after{
+  content: "";
+  bottom: 0;
+  left: 0;
+  height: 26px;
+  width: 240px;
+  z-index: 1;
+  position: fixed;
+  background: black;
+}
+header div{
+  position: fixed;
+  top: 28px;
+  height: 24px;
+  z-index: 10;
+  background: black;
+  padding: 2px;
+}
+header div:first-of-type{
+  left: 24px;
+}
+header div:last-of-type{
+  right: 24px;
+}
+header div img{
+  height: 18px;
+  width: auto;
+  vertical-align: bottom;
+}
+main{
+  margin-top: 100px;
+  margin-left: 29px;
+  font-size: 0;
+  width: 182px;
+  margin-bottom: 38.5vh;
+}
+main .ui-days{
+  position: fixed;
+  top: 72px;
+  left: 29px;
+  background: black;
+  padding: 2px;
+  width: 182px;
+  font-size: 0;
+  z-index: 2;
+}
+aside{
+  height: 320px;
+  width: 240px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: black;
+  z-index: 2;
+}
+aside canvas{
+  position: absolute;
+}
+aside ul{
+  font-size: 14px;
+  line-height: 1em;
+  list-style: none;
+  padding: 6px;
+  margin: 0;
+  position: fixed;
+  bottom: 12px;
+  left: 20px;
+}
+aside ul img{
+  height: 14px;
+  width: auto;
+  margin-right: 12px;
+  margin-top: 4px;
+  margin-bottom: -1px; /*to fix visual alignment*/
+}
+main div, main span{
+  width: 26px;
+  height: 24px;
+  text-align: center;
+  display: inline-block;
+  font-size: 24px;
+}
+main div img{
+  height: 24px;
+  width: auto;
+  transition: all;
+}
+main div:hover img, main .selected img{
+  border: 2px solid white;
+  height: 20px;
+  border-radius: 50%;
+}
