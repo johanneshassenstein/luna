@@ -3,23 +3,11 @@
 **Throws an error message when permission is denied or the feature is not present.
 */
 document.body.scrollTop = 0;
-var _latitude = 53.57727810000001; //sets to fallback
-var _longitude = 10.0170888; //sets to fallback
-function setLocation(){
-  if (navigator.geolocation) { //checks if geolocation feature is present
-     navigator.geolocation.getCurrentPosition(function (p) { //gets current GPS position, passes it through the function
-       _latitude = p.coords.latitude; //sets lat to the correct ordinate
-       _longitude = p.coords.longitude; //sets long to the correct ordinate
-     });
-  }
-  else { //if the geolocation feature is present
-    alert('Geo Location feature must be present and location access needs to be allowed'); //shows an error message
-  }
-}
 
 var _main = new Luna(); //stores the main object
 _main.init(); //initiates the main object
-document.body.scrollTop = 0;
+_main.setLocation();
+document.body.scrollTop = 0; //unscrolls the body
 
 
 
@@ -33,19 +21,38 @@ window.onkeydown = function(e) {//when a key is pressed
       _main.calendar.changeSelection(-1); //changes the selected element by -1
      break;
      case 38: //up arrow
-       _main.calendar.changeSelection(-7); //changes the selected element by -7
+      if(_main.settings.open){
+        _main.settings.changeSelection(-1); //changes the selected setting by -1
+      }
+      else{
+         _main.calendar.changeSelection(-7); //changes the selected element by -7
+      }
      break;
      case 39: //right arrow
        _main.calendar.changeSelection(1); //changes the selected element by 1
      break;
      case 40: //down arrow
-       _main.calendar.changeSelection(7); //changes the selected element by 7
+       if(_main.settings.open){
+         _main.settings.changeSelection(1); //changes the selected setting by 1
+       }
+       else{
+          _main.calendar.changeSelection(7); //changes the selected element by 7
+       }
      break;
      case 0: //any of the two softkeys
-       setLocation();
+       _main.settings.toggle();
      break;
+     case 27: //esc button
+       _main.settings.toggle();
+       break;
      case 13: //center button
-       _main.detail.toggle();
+       if(_main.settings.open){
+         _main.settings.select(); //changes the selected setting by 1
+       }
+       else{
+         _main.detail.toggle();; //changes the selected element by 7
+       }
+     break;
      break;
    }
 }
@@ -54,15 +61,40 @@ window.onkeydown = function(e) {//when a key is pressed
 **main object that hold all other objects
 */
 function Luna(){
-  this.calendar = new Calendar(124); //stores the virtual calendar
+  this.calendar = new Calendar(31); //stores the virtual calendar
   this.ui = new UI(); //stores the UI elements
   this.detail = new Detail();
+  this.settings = new Settings();
+  this.latitude = 53.57727810000001; //sets to fallback
+  this.longitude = 10.0170888;
   /*INIT
   **initiates all elements held by the main element
   */
   this.init = function(){
     this.calendar.init();
     this.ui.init();
+  }
+  /*CHANGECALENDAR
+  **changes the amount of days in the virtual calandar
+  */
+  this.changeCalendar = function(num){
+    this.ui.emptyMain();
+    this.calendar = new Calendar(num);
+    this.init();
+  }
+  /*CHANGELOCATION
+  **changes the current location
+  */
+  this.setLocation = function(){
+    if (navigator.geolocation) { //checks if geolocation feature is present
+       navigator.geolocation.getCurrentPosition(function (p) { //gets current GPS position, passes it through the function
+         this.latitude = p.coords.latitude; //sets lat to the correct ordinate
+         this.longitude = p.coords.longitude; //sets long to the correct ordinate
+       });
+    }
+    else { //if the geolocation feature is present
+      alert('Geo Location feature must be present and location access needs to be allowed'); //shows an error message
+    }
   }
 }
 /*UI
@@ -79,6 +111,7 @@ function UI(){
   this.nadir = this.aside.getElementsByTagName("LI")[3].getElementsByTagName("SPAN")[1];
   this.distance = this.aside.getElementsByTagName("LI")[4].getElementsByTagName("SPAN")[1];
   this.canvas = document.body.getElementsByTagName("CANVAS")[0];
+  this.nav = document.getElementsByTagName("NAV")[0]; //stores the aside element
   this.moon = new Moon(this.canvas);
   this.mainEntitys = []; //stores all elements held by the main object for virtual access
   /*INIT
@@ -114,6 +147,15 @@ function UI(){
       this.mainEntitys.push(entity); //pushes the div into the holding array
       this.main.appendChild(entity); //appends the div to the main element
     }
+  }
+  /*EMPTYMAIN
+  **emptys the main element
+  */
+  this.emptyMain = function(){
+    for(var i = 0; i < this.mainEntitys.length; i++){
+      this.mainEntitys[i].parentNode.removeChild(this.mainEntitys[i]);
+    }
+    this.mainEntitys = [];
   }
   /*SETTIMES
   **sets the rise and set time with their respective function
@@ -230,15 +272,15 @@ function Calendar(span){
 function Day(date){
   this.date = date; //stores the date of the day
   this.phase = SunCalc.getMoonIllumination(this.date).phase; //stores the phase of this day
-  this.rise = SunCalc.getMoonTimes(this.date, _latitude, _longitude).rise; //gets and stores the risetime for this day
+  this.rise = SunCalc.getMoonTimes(this.date, _main.latitude, _main.longitude).rise; //gets and stores the risetime for this day
   this.rise ? this.rise = this.rise : this.rise = new Date(); //fallback when rise can not be calculated
-  this.set = SunCalc.getMoonTimes(this.date, _latitude, _longitude).set; //gets and stores the settime for this day
+  this.set = SunCalc.getMoonTimes(this.date, _main.latitude, _main.longitude).set; //gets and stores the settime for this day
   this.set ? this.set = this.set : this.set = new Date(); //fallback when rise can not be calculated
-  this.sunset = SunCalc.getTimes(this.date, _latitude, _longitude).sunset; //gets and stores the start of the night for this day
-  this.night = SunCalc.getTimes(this.date, _latitude, _longitude).night; //gets and stores the start of the night for this day
-  this.nadir = SunCalc.getTimes(this.date, _latitude, _longitude).nadir; //gets and stores the darkest time of the night for this day
-  this.altitude = SunCalc.getMoonPosition(this.date, _latitude, _longitude).altitude; //gets and stores the moons altitude for this day
-  this.distance = SunCalc.getMoonPosition(this.date, _latitude, _longitude).distance; //gets and stores the distance to the moon for this day
+  this.sunset = SunCalc.getTimes(this.date, _main.latitude, _main.longitude).sunset; //gets and stores the start of the night for this day
+  this.night = SunCalc.getTimes(this.date, _main.latitude, _main.longitude).night; //gets and stores the start of the night for this day
+  this.nadir = SunCalc.getTimes(this.date, _main.latitude, _main.longitude).nadir; //gets and stores the darkest time of the night for this day
+  this.altitude = SunCalc.getMoonPosition(this.date, _main.latitude, _main.longitude).altitude; //gets and stores the moons altitude for this day
+  this.distance = SunCalc.getMoonPosition(this.date, _main.latitude, _main.longitude).distance; //gets and stores the distance to the moon for this day
   this.description = "unset"; //stores the description of this day
   /*SETDESCRIPTION
   **sets the description corresponding to the phase
@@ -277,7 +319,6 @@ function Day(date){
 }
 
 function Detail(){
-  document.body.scrollTop = 0; //resets body scroll
   this.open = false;
   this.toggle = function(){
     if(this.open){
@@ -288,11 +329,55 @@ function Detail(){
     }
     this.open = !this.open;
   }
-  this.render = function(object){
-
-  }
 }
 
+function Settings(){
+  this.open = false;
+  this.selected = 0;
+  this.optionsAmount = 4;
+  this.toggle = function(){
+    if(this.open){
+      _main.ui.nav.style.display = "none";
+    }
+    else{
+      this.selected = 0;
+      _main.ui.nav.getElementsByTagName("LI")[1].classList.add("selected");
+      _main.ui.nav.style.display = "inherit";
+    }
+    this.open = !this.open;
+  }
+  this.changeSelection = function(dir){
+    _main.ui.nav.getElementsByTagName("LI")[this.selected + 1].classList.remove("selected");
+    this.selected += dir;
+    if(this.selected < 0){
+      this.selected = (this.optionsAmount - 1);
+    }
+    else if(this.selected > this.optionsAmount - 1){
+      this.selected = 0;
+    }
+    _main.ui.nav.getElementsByTagName("LI")[this.selected + 1].classList.add("selected");
+  }
+  this.select = function(){
+    switch(this.selected){
+      case 0:
+        this.toggle();
+        _main.changeCalendar(prompt("Days in calendar?"));
+        _main.changeCalendar(_main.calendar.span);
+        break;
+      case 1:
+        _main.latitude = prompt("Set latitude to?");
+        _main.changeCalendar(_main.calendar.span);
+        break;
+      case 2:
+        _main.longitude = prompt("Set longitude to?");
+        _main.changeCalendar(_main.calendar.span);
+        break;
+      case 3:
+        _main.setLocation();
+        break;
+    }
+  }
+}
 function Moon(canvas){
 	this.lineWidth = 10;
 	this.radius = canvas.width / 4;
