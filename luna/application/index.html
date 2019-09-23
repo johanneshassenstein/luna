@@ -11,10 +11,10 @@
       <div><img src="images/graphics/rise.png" alt="⯅"><span></span></div>
       <div><img src="images/graphics/set.png" alt="⯆"><span></span></div>
     </header>
+    <div id="ui-days">
+      <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+    </div>
     <main>
-      <div class="ui-days">
-        <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
-      </div>
     </main>
     <aside style="display: none;">
       <canvas id="canvas" height="320px" width="240px"></canvas>
@@ -38,13 +38,17 @@
       </ul>
     </aside>
     <nav style="display: none;">
+      <div>Options</div>
+      <br>
       <ul>
         <li>
-          Options
-        </li>
-        <br>
-        <li>
           Set calendar range
+        </li>
+        <li>
+          Toggle weeknumbers
+        </li>
+        <li>
+          Reset location
         </li>
         <li>
           Set latitude
@@ -53,11 +57,27 @@
           Set longitude
         </li>
         <li>
-          Reset location
+          Toggle theme
         </li>
-
+        <li>
+          Clear storage
+        </li>
+        <li>
+          Credits
+        </li>
       </ul>
+      <br>
     </nav>
+    <div id="credits">
+      <h3>Code and design by</h3>
+      Johannes Hassenstein
+      <br><br>
+      <h3>suncalc.js by</h3>
+      Vladimir Agafonkin
+      <br><br>
+      <h3>Date.getWeek() by</h3>
+      weeknumber.net
+    </div>
     <script type="text/javascript" src="js/webapp.js"></script>
   </body>
 </html>

@@ -4,6 +4,9 @@ html{
   top: 0;
   left: 0;
 }
+.light-theme{
+  filter: invert(100%);
+}
 html, body{
   width: 240px;
   height: 320px;
@@ -74,15 +77,33 @@ main{
   width: 182px;
   margin-bottom: 38.5vh;
 }
-main .ui-days{
+#ui-days{
   position: fixed;
-  top: 72px;
+  top: 66px;
   left: 29px;
   background: black;
   padding: 2px;
   width: 182px;
   font-size: 0;
   z-index: 2;
+}
+#ui-days span{
+  width: 26px;
+  height: 24px;
+  text-align: center;
+  display: inline-block;
+  font-size: 24px;
+  line-height: 1em;
+}
+.show-weeknumbers #ui-days{
+  left: 51px;
+  width: 160px;
+}
+.show-weeknumbers #ui-days span{
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+  line-height: 1em;
 }
 aside{
   height: 320px;
@@ -130,28 +151,69 @@ main div:hover img, main .selected img{
   height: 20px;
   border-radius: 50%;
 }
+.show-weeknumbers main div, .show-weeknumbers main span{
+  width: 22px;
+  height: 22px;
+  line-height: 1em;
+}
+.show-weeknumbers main div img{
+  height: 22px;
+}
+.show-weeknumbers main div:hover img, .show-weeknumbers main .selected img{
+  border: 2px solid white;
+  height: 18px;
+  border-radius: 50%;
+}
+.weeknumber{
+  font-size: 12px;
+  vertical-align: top;
+  text-align: left;
+}
 nav{
-  height: 320px;
+  height: 292px;
   width: 240px;
   position: fixed;
   top: 0;
   left: 0;
   background: black;
   z-index: 100;
+  padding-top: 28px;
 }
 nav ul{
   list-style: none;
   padding: 0;
   margin: 0;
   width: 100%;
-  padding-top: 28px;
 }
-nav ul li{
+nav ul li, nav div{
   padding: 3px 24px;
   display: block;
   transition: all 0.2s ease-out;
 }
+nav ul li span{
+  float: right;
+  padding-right: 24px;
+}
 nav ul li:hover, nav ul .selected{
   background: white;
   color: black;
+}
+#credits{
+  height: 264px;
+  width: 196px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 28px 24px;
+  background: black;
+  z-index: 1000;
+  line-height: 1.4em;
+  display: none;
+}
+#credits h3{
+  font-size: smaller;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  line-height: inherit;
 }
